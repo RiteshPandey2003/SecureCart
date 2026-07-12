@@ -35,6 +35,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
+            System.out.println("JWTAuthenticationFilter: extracted token (length=" + (token != null ? token.length() : 0) + ")");
             try {
                 Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
@@ -43,6 +44,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                     .getBody();
 
                 String userId = claims.getSubject();
+                System.out.println("JWTAuthenticationFilter: token valid, subject=" + userId);
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
@@ -50,6 +52,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } catch (Exception e) {
+                System.out.println("JWTAuthenticationFilter: token validation failed: " + e.getMessage());
+
                 // Invalid or expired token — clear context so the request stays unauthenticated
                 SecurityContextHolder.clearContext();
             }
