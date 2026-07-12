@@ -37,11 +37,11 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
             System.out.println("JWTAuthenticationFilter: extracted token (length=" + (token != null ? token.length() : 0) + ")");
             try {
-                Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                Claims claims = Jwts.parser()
+                        .verifyWith(key)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload();
 
                 String userId = claims.getSubject();
                 System.out.println("JWTAuthenticationFilter: token valid, subject=" + userId);
