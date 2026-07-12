@@ -14,10 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -49,7 +46,7 @@ public class AuthController {
         User user = userService.getUserByName(loginRequest.getUsername());
         AuthResponse authResponse = new AuthResponse();
         authResponse.setMessage("login seccessfully");
-        authResponse.setAccessToken("beare" + JwtToken);
+        authResponse.setAccessToken("Bearer" + JwtToken);
         authResponse.setUserId(Long.valueOf(user.getId()));
         authResponse.setRefreshToken(refreshTokenService.CreateRefreshToken(user));
          return authResponse;
@@ -86,5 +83,10 @@ public class AuthController {
         authResponse.setRefreshToken(refreshTokenService.CreateRefreshToken(user));
 
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/test/restrict")
+    public String RestrictedRoute(){
+        return "restricted route";
     }
 }
