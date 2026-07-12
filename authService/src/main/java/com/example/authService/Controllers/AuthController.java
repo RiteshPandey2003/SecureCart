@@ -46,7 +46,7 @@ public class AuthController {
         User user = userService.getUserByName(loginRequest.getUsername());
         AuthResponse authResponse = new AuthResponse();
         authResponse.setMessage("login seccessfully");
-        authResponse.setAccessToken("Bearer" + JwtToken);
+        authResponse.setAccessToken("Bearer " + JwtToken);
         authResponse.setUserId(Long.valueOf(user.getId()));
         authResponse.setRefreshToken(refreshTokenService.CreateRefreshToken(user));
          return authResponse;
@@ -79,7 +79,7 @@ public class AuthController {
         System.out.println("jwt token" + JwtToken);
 
         authResponse.setMessage("User created Successfully");
-        authResponse.setAccessToken("Bearer"+JwtToken);
+        authResponse.setAccessToken("Bearer " + JwtToken);
         authResponse.setRefreshToken(refreshTokenService.CreateRefreshToken(user));
 
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
